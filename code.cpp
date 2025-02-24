@@ -1,4 +1,5 @@
 #include <iostream>
+#include <math.h>
 using namespace std;
 
 class BankAccount
@@ -53,9 +54,8 @@ public:
 class SavingAccount : public BankAccount
 {
 public:
-    SavingAccount(long long accountNumber, string accountHolderName, double balance) : BankAccount(accountNumber, accountHolderName, balance)
-    {
-    }
+    SavingAccount(long long accountNumber, string accountHolderName, double balance)
+        : BankAccount(accountNumber, accountHolderName, balance) {}
 
     void simpleinterestRate(double years, double interestRate)
     {
@@ -65,16 +65,45 @@ public:
     }
 };
 
-class CheckingAccount : protected BankAccount
+class CheckingAccount : public BankAccount
 {
-
+protected:
     double overdraftLimit;
+
+public:
+    CheckingAccount(long long accountNumber, string accountHolderName, double balance, double overdraftLimit)
+        : BankAccount(accountNumber, accountHolderName, balance)
+    {
+        this->overdraftLimit = overdraftLimit;
+    }
+
+    bool withdraw(double amount)
+    {
+        if (amount > balance + overdraftLimit)
+        {
+            cout << "Withdrawal failed: Overdraft limit exceeded." << endl;
+            return false;
+        }
+        balance -= amount;
+        cout << "Withdrawn: " << amount << " | New Balance: " << balance << endl;
+        return true;
+    }
 };
 
-class FixedDepositAccount : protected BankAccount
+class FixedDepositAccount : public BankAccount
 {
 
     double term;
+
+public:
+    FixedDepositAccount(long long accountNumber, string accountHolderName, double balance)
+        : BankAccount(accountNumber, accountHolderName, balance) {}
+
+    void calculateMaturityAmount(double interestRate, double term)
+    {
+        double maturityAmount = balance * pow((1 + (interestRate / (100 * 12))), term);
+        cout << "Maturity Amount after " << term << " months: " << maturityAmount << endl;
+    }
 };
 
 int main()
@@ -86,9 +115,18 @@ int main()
     // b1.withdraw(5000);
     // b1.getBalance();
 
-    SavingAccount s1(3434456676566, "Utkarsh Patel", 23453);
-    s1.Accountinfo();
-    s1.deposit(2000);
-    s1.simpleinterestRate(3,5);
-    s1.getBalance();
+    // SavingAccount s1(3434456676566, "Utkarsh Patel", 23453);
+    // s1.Accountinfo();
+    // s1.deposit(5000);
+    // s1.simpleinterestRate(3,5);
+    // s1.getBalance();
+
+    // CheckingAccount ca(3434456676566, "Utkarsh Patel", 23453, 5000);
+    // ca.Accountinfo();
+    // ca.withdraw(29000); // Uses overdraft limit
+    // ca.getBalance();
+
+    // FixedDepositAccount fda(3434456676566, "Utkarsh Patel", 23453);
+    // fda.Accountinfo();
+    // fda.calculateMaturityAmount(6,60);
 }
