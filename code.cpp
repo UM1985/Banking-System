@@ -10,6 +10,7 @@ protected:
     double balance;
 
 public:
+    // Constructor
     BankAccount(long long accountNumber, string accountHolderName, double balance)
     {
         this->accountNumber = accountNumber;
@@ -17,46 +18,64 @@ public:
         this->balance = balance;
     }
 
+    // Deposit method
     void deposit(double amount)
     {
-
-        this->balance = balance + amount;
-
-        cout << "Deposited: " << amount << " | New Balance: " << balance << endl;
+        if (amount > 0)
+        {
+            this->balance += amount;
+            cout << "Deposited: " << amount << " | New Balance: " << balance << endl;
+        }
+        else
+        {
+            cout << "Invalid deposit amount. Amount must be positive." << endl;
+        }
     }
-    double withdraw(double amount)
+
+    // Withdraw method
+    bool withdraw(double amount)
     {
         if (amount > balance)
         {
             cout << "Withdrawal failed: Insufficient balance." << endl;
+            return false;
+        }
+        else if (amount <= 0)
+        {
+            cout << "Invalid withdrawal amount. Amount must be positive." << endl;
+            return false;
         }
         else
         {
-            this->balance = balance - amount;
+            this->balance -= amount;
             cout << "Withdrawn: " << amount << " | New Balance: " << balance << endl;
+            return true;
         }
     }
 
+    // Get balance method
     void getBalance()
     {
-
         cout << "Available Balance is " << balance << endl;
     }
 
+    // Account info method
     void Accountinfo()
     {
-        cout << "Account Number : " << accountNumber << endl;
-        cout << "Account Holder Name : " << accountHolderName << endl;
-        cout << "Available Balance : " << balance << endl;
+        cout << "Account Number: " << accountNumber << endl;
+        cout << "Account Holder Name: " << accountHolderName << endl;
+        cout << "Available Balance: " << balance << endl;
     }
 };
 
 class SavingAccount : public BankAccount
 {
 public:
+    // Constructor
     SavingAccount(long long accountNumber, string accountHolderName, double balance)
         : BankAccount(accountNumber, accountHolderName, balance) {}
 
+    // Simple interest calculation
     void simpleinterestRate(double years, double interestRate)
     {
         double interest = balance * (interestRate / 100) * years;
@@ -71,37 +90,46 @@ protected:
     double overdraftLimit;
 
 public:
+    // Constructor
     CheckingAccount(long long accountNumber, string accountHolderName, double balance, double overdraftLimit)
         : BankAccount(accountNumber, accountHolderName, balance)
     {
         this->overdraftLimit = overdraftLimit;
     }
 
+    // Withdraw method with overdraft limit
     bool withdraw(double amount)
     {
-        if (amount > balance + overdraftLimit)
+        if (amount <= 0)
+        {
+            cout << "Invalid withdrawal amount. Amount must be positive." << endl;
+            return false;
+        }
+        else if (amount > balance + overdraftLimit)
         {
             cout << "Withdrawal failed: Overdraft limit exceeded." << endl;
             return false;
         }
-        balance -= amount;
-        cout << "Withdrawn: " << amount << " | New Balance: " << balance << endl;
-        return true;
+        else
+        {
+            balance -= amount;
+            cout << "Withdrawn: " << amount << " | New Balance: " << balance << endl;
+            return true;
+        }
     }
 };
 
 class FixedDepositAccount : public BankAccount
 {
-
-    double term;
-
 public:
+    // Constructor
     FixedDepositAccount(long long accountNumber, string accountHolderName, double balance)
         : BankAccount(accountNumber, accountHolderName, balance) {}
 
+    // Calculate maturity amount
     void calculateMaturityAmount(double interestRate, double term)
     {
-        double maturityAmount = balance * pow((1 + (interestRate / (100 * 12))), term);
+        double maturityAmount = balance * pow(1 + (interestRate / (100 * 12)), term);
         cout << "Maturity Amount after " << term << " months: " << maturityAmount << endl;
     }
 };
@@ -128,5 +156,5 @@ int main()
 
     // FixedDepositAccount fda1(3434456676566, "Utkarsh Patel", 23453);
     // fda1.Accountinfo();
-    // fda1.calculateMaturityAmount(6,60);
+    // fda1.calculateMaturityAmount(6,5);
 }
