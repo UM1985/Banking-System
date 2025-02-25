@@ -121,12 +121,12 @@ int main()
     // s1.simpleinterestRate(3,5);
     // s1.getBalance();
 
-    // CheckingAccount ca(3434456676566, "Utkarsh Patel", 23453, 5000);
-    // ca.Accountinfo();
-    // ca.withdraw(29000); // Uses overdraft limit
-    // ca.getBalance();
+    // CheckingAccount ca1(3434456676566, "Utkarsh Patel", 23453, 5000);
+    // ca1.Accountinfo();
+    // ca1.withdraw(29000); // Uses overdraft limit
+    // ca1.getBalance();
 
-    // FixedDepositAccount fda(3434456676566, "Utkarsh Patel", 23453);
-    // fda.Accountinfo();
-    // fda.calculateMaturityAmount(6,60);
+    // FixedDepositAccount fda1(3434456676566, "Utkarsh Patel", 23453);
+    // fda1.Accountinfo();
+    // fda1.calculateMaturityAmount(6,60);
 }
